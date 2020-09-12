@@ -40,7 +40,9 @@ const MORSE_TABLE = {
 function decode(expr) {
     let arr = expr.match(/.{1,10}/g),
         res = [],
-        finish = [];
+        finish = [],
+        check = 0;
+
     for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr[i].length; j += 2) {
             let str = arr[i][j] + arr[i][j + 1];
@@ -58,6 +60,22 @@ function decode(expr) {
     for (let i = 0; i < res.length; i++) {
         finish.push(MORSE_TABLE[res[i]]);
     }
+
+    finish.forEach(el => {
+        if (typeof el === 'undefined') {
+            check += 1;
+        }
+    });
+
+    if (check > 1) {
+        for (let i = 0; i < finish.length; i++) {
+            if (typeof finish[i] === 'undefined') {
+                finish[i] = ' ';
+            }
+        }
+        finish.pop();
+    }
+
     return finish.join('');
 }
 
